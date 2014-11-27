@@ -21,9 +21,9 @@ public class Mailmanager {
 
 		FileWriter fw = null;
 		BufferedWriter out = null;
-		// Write modified event to file.
+
 		try {
-			fw = new FileWriter(this.generateId());
+			fw = new FileWriter("mail" + this.generateId() + ".txt");
 			out = new BufferedWriter(fw);
 
 			out.write(mail.convertInString());
@@ -45,6 +45,7 @@ public class Mailmanager {
 		return false;
 	}
 
+
 	public Collection<Mail> findAll() {
 		return null;
 	}
@@ -54,7 +55,8 @@ public class Mailmanager {
 	}
 
 	public int generateId() {
-		// TODO: implement this funciton
+		// TODO: implement this function who generate an unique id
+		return 0;
 	}
 
 }

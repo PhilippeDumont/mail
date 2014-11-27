@@ -54,22 +54,24 @@ public class Mail {
 
 		return str;
 	}
-	
-	public boolean populat(String text){
-		
+
+	public void populat(String text) {
+
 		String[] var = text.split("\n");
-		
+
 		int i = 0;
-		while(i < var.length){
-			
-			if(i == 0){
+		while (i < var.length) {
+
+			if (i == 0) {
 				this.source = var[0];
-			}else if(i == 1){
+			} else if (i == 1) {
 				this.destination = var[1];
+			} else if (i == 2) {
+				this.title = var[2];
+			} else if (i == 3) {
+				this.content = var[3];
 			}
-			
 		}
-		
 	}
 
 }

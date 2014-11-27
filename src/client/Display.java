@@ -12,12 +12,19 @@ import java.util.Scanner;
  */
 public class Display {
 
+	Command command;
+
+	public Display(Command command) {
+		super();
+		this.command = command;
+	}
+
 	public void Start() {
 		System.out.println("Welcome in mail");
 		String input = "";
 		Scanner in = new Scanner(System.in);
 
-		File dir = new File("events");
+		File dir = new File("mails");
 		if (!dir.exists()) {
 			dir.mkdir();
 		}
@@ -27,15 +34,12 @@ public class Display {
 			System.out.println(">");
 			input = in.nextLine();
 
-			// Write a new mail
+			// Login
 			if (input.equals("new")) {
-				this.newMail();
+				this.command.login();
 				continue;
 			}
 
-			if (input.equals("load")) {
-				this.loadMail();
-			}
 
 			// Error
 			System.out.println("Illegal command: " + input);
@@ -46,10 +50,36 @@ public class Display {
 		in.close();
 	}
 
-	public void newMail() {
+	public void commandInterface() {
+		System.out.println("Welcome in mail");
+		String input = "";
+		Scanner in = new Scanner(System.in);
+
+		// Enter a loop to parse all input.
+		do {
+			System.out.println(">");
+			input = in.nextLine();
+
+			// Write a new mail
+			if (input.equals("new")) {
+				this.command.newMail();
+				continue;
+			}
+
+			if (input.equals("load")) {
+				this.command.loadMail();
+			}
+
+			// Error
+			System.out.println("Illegal command: " + input);
+
+		} while (!input.equals("quit"));
+		// Cleanup.
+		System.out.println("EventManager is terminating...");
+		in.close();
+
 	}
 
-	public void loadMail() {
-	}
+
 
 }
