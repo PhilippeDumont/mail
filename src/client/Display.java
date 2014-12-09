@@ -20,7 +20,11 @@ public class Display {
 	}
 
 	public void start() {
+		System.out.println("+++++++++++++++");
 		System.out.println("Welcome in mail");
+		System.out.println("+++++++++++++++");
+
+		boolean correctLogin = false;
 		String input = "";
 		Scanner in = new Scanner(System.in);
 
@@ -31,26 +35,27 @@ public class Display {
 
 		// Enter a loop to parse all input.
 		do {
-			System.out.println(">");
+			System.out.println("Enter your login :");
 			input = in.nextLine();
 
 			// Login
-			if (input.equals("login")) {
-				this.command.login();
+			if (!input.equals("quit")) {
+				this.command.login(input);
+				correctLogin = true;
 				continue;
 			}
 
-			// Error
-			System.out.println("Illegal command: " + input);
 
-		} while (!input.equals("quit"));
-		// Cleanup.
-		System.out.println("EventManager is terminating...");
+		} while (!input.equals("quit") || correctLogin);
+
 		in.close();
 	}
 
 	public void commandInterface() {
-		System.out.println("Welcome in mail");
+
+		System.out.println("Enter an instruction or enter help");
+
+
 		String input = "";
 		Scanner in = new Scanner(System.in);
 
@@ -67,10 +72,12 @@ public class Display {
 
 			if (input.equals("load")) {
 				this.command.loadMail();
+				continue;
 			}
 
 			if (input.equals("help")) {
 				this.command.help();
+				continue;
 			}
 
 			// Error

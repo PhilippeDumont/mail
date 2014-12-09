@@ -13,7 +13,7 @@ public class MainClient {
 
 	public static void main(String[] args) throws IOException {
 
-		Client client = new Client();
+		Client client = new Client(8001, "localhost");
 		client.run();
 
 	}

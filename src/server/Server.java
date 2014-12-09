@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.List;
 
 import util.Protocol;
 import controller.MailManager;
@@ -20,13 +21,11 @@ import entity.Mail;
  */
 public class Server {
 
-	private String serverName = "localhost";
 	private int port;
 	private ServerSocket welcomingSocket;
 	private MailManager mailManager;
 
 	public Server(int port, String serverName) {
-		this.serverName = serverName;
 		this.port = port;
 		this.mailManager = new MailManager();
 
@@ -34,7 +33,7 @@ public class Server {
 
 	public void run() throws IOException {
 
-		welcomingSocket = new ServerSocket(port);
+		this.welcomingSocket = new ServerSocket(port);
 
 		this.welcomingSocket.setSoTimeout(100000);
 
@@ -52,7 +51,6 @@ public class Server {
 			DataOutputStream out = new DataOutputStream(
 					server.getOutputStream());
 
-			String outMessage = "";
 			String inMessage = "";
 
 			while (!inMessage.equals("exit")) {
@@ -69,6 +67,18 @@ public class Server {
 
 					out.writeUTF(Protocol.ACK);
 
+				} else if (inMessage.startsWith(Protocol.LOAD)) {
+
+					String address = inMessage.substring(5).split("\\s+")[0];
+					List<Mail> mails = this.mailManager.findByAdress(address);
+
+					if (mails.isEmpty()) {
+						out.writeUTF(Protocol.EMPTY);
+					} else {
+						out.writeUTF(mails.get(0).toString());
+						this.mailManager.remove(mails.get(0));
+
+					}
 				}
 
 			}

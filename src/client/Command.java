@@ -18,6 +18,7 @@ import entity.Mail;
 public class Command {
 
 	private MailManager mailManager;
+	private String login;
 
 	private DataOutputStream out;
 	private DataInputStream in;
@@ -49,11 +50,26 @@ public class Command {
 	 */
 	public void loadMail() {
 
+		Mail mail = new Mail();
+		boolean stackIsEmpty = false;
+		String answer = "";
+
 		try {
-			out.writeUTF(Protocol.LOAD);
+
+			while (!stackIsEmpty) {
+				out.writeUTF(Protocol.LOAD + " " + this.login);
+				answer = in.readUTF();
+
+				if (answer.equals(Protocol.EMPTY)) {
+					stackIsEmpty = true;
+				} else {
+					mail.populat(answer);
+					this.mailManager.save(mail);
+				}
+			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println("Error of connection with the server");
 		}
 
 	}
@@ -65,14 +81,18 @@ public class Command {
 
 	}
 
-	public void login() {
+	public void login(String login) {
+		this.login = login;
 	}
 
 	/**
 	 * 
 	 */
 	public void help() {
-		System.out.println("new [source] [destination] [title] [content]");
+		System.out.println("HEP MENU");
+		System.out
+				.println("new [source] [destination] [title] [content] => send a mail on the server");
+		System.out.println("load => Get all the mail on the server");
 
 	}
 

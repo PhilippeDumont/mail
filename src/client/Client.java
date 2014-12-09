@@ -15,9 +15,8 @@ import java.net.Socket;
 
 public class Client {
 
-	private static String serverName = "localhost";
-	private static int port = 8001;
-	private boolean access = false;
+	private static String serverName;
+	private static int port;
 
 	private Command command;
 	private Display display;
@@ -25,18 +24,17 @@ public class Client {
 	private String address;
 	private String pseudo;
 
+	public Client(int port, String serverName) {
+		this.serverName = serverName;
+		this.port = port;
+
+	}
+
 	public void run() {
 
 		try {
 
 			Socket client = new Socket(serverName, port);
-
-			System.out.println("Trying connecting to..." + serverName
-					+ " on port " + port);
-			System.out.println("Local socket :"
-					+ client.getLocalSocketAddress());
-			System.out.println("Just connected to "
-					+ client.getRemoteSocketAddress());
 
 			DataOutputStream out = new DataOutputStream(
 					client.getOutputStream());
@@ -49,7 +47,7 @@ public class Client {
 
 			// closing socket
 			client.close();
-			System.out.println("Connection closed");
+			System.out.println("End of the application");
 
 		} catch (IOException e) {
 			e.printStackTrace();

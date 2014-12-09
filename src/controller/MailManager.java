@@ -12,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import entity.Mail;
@@ -128,10 +127,6 @@ public class MailManager {
 		if (mails == null) {
 			return null;
 		}
-		// Initialise streams
-		FileInputStream fis = null;
-		BufferedInputStream bis = null;
-		BufferedReader reader = null;
 
 		// Loop over all files in the directory.
 		for (File file : mails) {
@@ -148,7 +143,7 @@ public class MailManager {
 	 * @param adress
 	 * @return
 	 */
-	public Collection<Mail> findByAdress(String adress) {
+	public List<Mail> findByAdress(String adress) {
 		List<Mail> res = new ArrayList<Mail>();
 
 		List<Mail> mails = this.findAll();
@@ -163,13 +158,34 @@ public class MailManager {
 	}
 
 	/**
-	 * Create
+	 * Generate an unique id for the mail in the local directory
 	 * 
 	 * @return
 	 */
 	public int generateId() {
 		// TODO: implement this function who generate an unique id
+		/**
+		 * parcour le directory et trouver un id not used.
+		 */
 		return 0;
+	}
+
+	/**
+	 * @param mail
+	 */
+	public void remove(Mail mail) {
+		File dir = new File("events");
+		File[] events = dir.listFiles();
+		if (events == null) {
+			return;
+		}
+
+		for (File f : events) {
+			if (f.getName().equals(mail.getId() + ".txt")) {
+				f.delete();
+				return;
+			}
+		}
 	}
 
 }
