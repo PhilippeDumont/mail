@@ -49,7 +49,7 @@ public class Mail {
 	public String convertInString() {
 		String str = "";
 
-		str = this.source + "\n" + this.destination + "\n" + this.title + "\n"
+		str = this.source + "\t" + this.destination + "\t" + this.title + "\t"
 				+ this.content;
 
 		return str;
@@ -57,7 +57,7 @@ public class Mail {
 
 	public void populat(String text) {
 
-		String[] var = text.split("\n");
+		String[] var = text.split("\t");
 
 		int i = 0;
 		while (i < var.length) {
