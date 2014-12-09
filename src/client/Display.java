@@ -19,7 +19,7 @@ public class Display {
 		this.command = command;
 	}
 
-	public void Start() {
+	public void start() {
 		System.out.println("Welcome in mail");
 		String input = "";
 		Scanner in = new Scanner(System.in);
@@ -35,10 +35,10 @@ public class Display {
 			input = in.nextLine();
 
 			// Login
-			if (input.equals("new")) {
+			if (input.equals("login")) {
 				this.command.login();
 				continue;
-			}
+				}
 
 
 			// Error

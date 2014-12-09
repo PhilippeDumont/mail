@@ -17,7 +17,12 @@ import java.net.SocketTimeoutException;
 public class Server {
 	public static void main(String[] args) throws IOException {
 		// to use arguments
-		int port = Integer.parseInt(args[0]);
+//		int port = Integer.parseInt(args[0]);
+		
+		String serverName = "localhost";
+		
+		int port = 8080;
+
 
 		// creation of the welcoming socket for listening on specified port
 		ServerSocket welcomingSocket = new ServerSocket(port);
