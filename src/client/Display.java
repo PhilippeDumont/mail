@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  * @author philippe
- *
+ * 
  */
 public class Display {
 
@@ -38,8 +38,7 @@ public class Display {
 			if (input.equals("login")) {
 				this.command.login();
 				continue;
-				}
-
+			}
 
 			// Error
 			System.out.println("Illegal command: " + input);
@@ -61,13 +60,17 @@ public class Display {
 			input = in.nextLine();
 
 			// Write a new mail
-			if (input.equals("new")) {
-				this.command.newMail();
+			if (input.startsWith("new")) {
+				this.command.newMail(input.substring(4).split("\\s+"));
 				continue;
 			}
 
 			if (input.equals("load")) {
 				this.command.loadMail();
+			}
+
+			if (input.equals("help")) {
+				this.command.help();
 			}
 
 			// Error
@@ -79,7 +82,5 @@ public class Display {
 		in.close();
 
 	}
-
-
 
 }

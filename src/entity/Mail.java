@@ -46,7 +46,7 @@ public class Mail {
 		this.content = content;
 	}
 
-	public String convertInString() {
+	public String toString() {
 		String str = "";
 
 		str = this.source + "\t" + this.destination + "\t" + this.title + "\t"
@@ -55,6 +55,11 @@ public class Mail {
 		return str;
 	}
 
+	/**
+	 * Populate a mail with a tab beetwen each data
+	 * 
+	 * @param text
+	 */
 	public void populat(String text) {
 
 		String[] var = text.split("\t");
@@ -71,6 +76,25 @@ public class Mail {
 			} else if (i == 3) {
 				this.content = var[3];
 			}
+		}
+	}
+
+	/**
+	 * Populate a mail with a tab of string
+	 * 
+	 * @param text
+	 */
+	public void populat(String[] values) {
+
+		this.source = values[0];
+		this.destination = values[1];
+		this.title = values[2];
+		this.content = "";
+
+		int i = 3;
+		while (i < values.length) {
+			content += values[i] + " ";
+			i++;
 		}
 	}
 

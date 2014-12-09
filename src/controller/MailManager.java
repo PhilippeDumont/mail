@@ -22,9 +22,21 @@ import entity.Mail;
  * 
  */
 
-public class Mailmanager {
+public class MailManager {
 
-	String fileName = "mails";
+	String directory = "mails";
+
+	public MailManager() {
+
+		File file = new File(directory);
+		if (!file.exists()) {
+			if (file.mkdir()) {
+				System.out.println("Directory is created!");
+			} else {
+				System.out.println("Failed to create directory!");
+			}
+		}
+	}
 
 	/**
 	 * Save a mail in a file
@@ -38,12 +50,12 @@ public class Mailmanager {
 		BufferedWriter out = null;
 
 		try {
-			fw = new FileWriter(this.fileName
+			fw = new FileWriter(this.directory
 					+ System.getProperty("file.separator")
 					+ mail.getDestination() + this.generateId() + ".txt");
 			out = new BufferedWriter(fw);
 
-			out.write(mail.convertInString());
+			out.write(mail.toString());
 			out.flush();
 
 		} catch (Exception e) {
@@ -110,7 +122,7 @@ public class Mailmanager {
 
 		List<Mail> res = new ArrayList<Mail>();
 
-		File dir = new File(this.fileName);
+		File dir = new File(this.directory);
 		File[] mails = dir.listFiles();
 		// No files in directory.
 		if (mails == null) {
