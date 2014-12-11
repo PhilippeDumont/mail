@@ -66,7 +66,7 @@ public class Mail {
 	public String toString() {
 		String str = "";
 
-		str = this.source + "\t" + this.destination + "\t"
+		str = this.id + "\t" + this.source + "\t" + this.destination + "\t"
 				+ this.title + "\t" + this.content;
 
 		return str;
@@ -78,22 +78,8 @@ public class Mail {
 	 * @param text
 	 */
 	public void populat(String text) {
-
 		String[] var = text.split("\t");
-
-		int i = 0;
-		while (i < var.length) {
-
-			if (i == 0) {
-				this.source = var[0];
-			} else if (i == 1) {
-				this.destination = var[1];
-			} else if (i == 2) {
-				this.title = var[2];
-			} else if (i == 3) {
-				this.content = var[3];
-			}
-		}
+		this.populat(var);
 	}
 
 	/**
@@ -103,12 +89,13 @@ public class Mail {
 	 */
 	public void populat(String[] values) {
 
-		this.source = values[0];
-		this.destination = values[1];
-		this.title = values[2];
+		this.id = values[0];
+		this.source = values[1];
+		this.destination = values[2];
+		this.title = values[3];
 		this.content = "";
 
-		int i = 3;
+		int i = 4;
 		while (i < values.length) {
 			content += values[i] + " ";
 			i++;

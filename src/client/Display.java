@@ -3,7 +3,6 @@
  */
 package client;
 
-import java.io.File;
 import java.util.Scanner;
 
 /**
@@ -19,42 +18,13 @@ public class Display {
 		this.command = command;
 	}
 
-	public void start() {
+	public void commandInterface() {
+
 		System.out.println("+++++++++++++++");
 		System.out.println("Welcome in mail");
 		System.out.println("+++++++++++++++");
 
-		boolean correctLogin = false;
-		String input = "";
-		Scanner in = new Scanner(System.in);
-
-		File dir = new File("mails");
-		if (!dir.exists()) {
-			dir.mkdir();
-		}
-
-		// Enter a loop to parse all input.
-		do {
-			System.out.println("Enter your login :");
-			input = in.nextLine();
-
-			// Login
-			if (!input.equals("quit")) {
-				this.command.login(input);
-				correctLogin = true;
-				continue;
-			}
-
-
-		} while (!input.equals("quit") || correctLogin);
-
-		in.close();
-	}
-
-	public void commandInterface() {
-
 		System.out.println("Enter an instruction or enter help");
-
 
 		String input = "";
 		Scanner in = new Scanner(System.in);
@@ -64,9 +34,25 @@ public class Display {
 			System.out.println(">");
 			input = in.nextLine();
 
+			if (input.startsWith("login")) {
+
+				try {
+					this.command.login(input.substring(6).split("\\s+"));
+				} catch (StringIndexOutOfBoundsException e) {
+					System.out.println("Enter login [name]");
+				}
+				continue;
+			}
+
 			// Write a new mail
-			if (input.startsWith("new")) {
-				this.command.newMail(input.substring(4).split("\\s+"));
+			if (input.startsWith("send")) {
+
+				try {
+					this.command.sendMail(input.substring(5).split("\\s+"));
+				} catch (StringIndexOutOfBoundsException e) {
+					System.out
+							.println("Enter send [destination] [title] [content]");
+				}
 				continue;
 			}
 

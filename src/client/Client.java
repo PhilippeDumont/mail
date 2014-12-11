@@ -39,7 +39,6 @@ public class Client {
 
 			this.command = new Command(in, out);
 			this.display = new Display(command);
-
 			display.commandInterface();
 
 			// closing socket

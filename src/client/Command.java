@@ -33,15 +33,37 @@ public class Command {
 	 * 
 	 * @param values
 	 */
-	public void newMail(String[] values) {
-		Mail mail = new Mail();
-		mail.populat(values);
+	public void sendMail(String[] values) {
 
-		try {
-			out.writeUTF(Protocol.ADD + " " + mail.toString());
-		} catch (IOException e) {
-			System.out.println("Error when I send the mail");
-			e.printStackTrace();
+		if (this.login != null) {
+			if (values.length > 3) {
+				Mail mail = new Mail();
+
+				mail.setSource(login);
+				mail.setDestination(values[0]);
+				mail.setTitle(values[1]);
+
+				int i = 2;
+				String content = "";
+				while (i < values.length) {
+					content += values[i] + " ";
+					i++;
+				}
+				mail.setContent(content);
+
+				try {
+					out.writeUTF(Protocol.ADD + " " + mail.toString());
+				} catch (IOException e) {
+					System.out.println("Error when I send the mail");
+					e.printStackTrace();
+				}
+				System.out.println("Send a new mail to "
+						+ mail.getDestination());
+			} else {
+				System.out.println("There are not all the argument");
+			}
+		} else {
+			System.out.println("Please enter your login to do this action");
 		}
 	}
 
@@ -50,26 +72,40 @@ public class Command {
 	 */
 	public void loadMail() {
 
-		Mail mail = new Mail();
-		boolean stackIsEmpty = false;
-		String answer = "";
+		if (this.login != null) {
 
-		try {
+			Mail mail = new Mail();
+			boolean stackIsEmpty = false;
+			String answer = "";
 
-			while (!stackIsEmpty) {
-				out.writeUTF(Protocol.LOAD + " " + this.login);
-				answer = in.readUTF();
+			try {
 
-				if (answer.equals(Protocol.EMPTY)) {
-					stackIsEmpty = true;
-				} else {
-					mail.populat(answer);
-					this.mailManager.save(mail);
+				while (!stackIsEmpty) {
+					out.writeUTF(Protocol.LOAD + " " + this.login);
+					answer = in.readUTF();
+
+					if (answer.equals(Protocol.EMPTY)) {
+						stackIsEmpty = true;
+					} else {
+						mail.populat(answer);
+						String message = "-------------------------- \n From : "
+								+ mail.getSource()
+								+ "\n Title : "
+								+ mail.getTitle()
+								+ " \n Content : "
+								+ mail.getContent();
+						
+						System.out.println(message);
+
+						// this.mailManager.save(mail);
+					}
 				}
-			}
 
-		} catch (Exception e) {
-			System.out.println("Error of connection with the server");
+			} catch (Exception e) {
+				System.out.println("Error of connection with the server");
+			}
+		} else {
+			System.out.println("Please enter your login to do this action");
 		}
 
 	}
@@ -81,8 +117,9 @@ public class Command {
 
 	}
 
-	public void login(String login) {
-		this.login = login;
+	public void login(String[] login) {
+		this.login = login[0];
+		System.out.println("Welcome " + this.login);
 	}
 
 	/**
@@ -90,8 +127,9 @@ public class Command {
 	 */
 	public void help() {
 		System.out.println("++++HELP MENU++++");
+		System.out.println("login [name] => enter your login");
 		System.out
-				.println("new [source] [destination] [title] [content] => send a mail on the server");
+				.println("send [destination] [title] [content] => send a mail on the server");
 		System.out.println("load => Get all the mails on the server");
 
 	}

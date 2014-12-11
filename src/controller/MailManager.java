@@ -23,14 +23,24 @@ import entity.Mail;
 
 public class MailManager {
 
-	String directory = "mails";
+	String mailDirectory = "mails";
+	String configDirectory = "config";
 
 	public MailManager() {
 
-		File file = new File(directory);
+		File file = new File(this.mailDirectory);
 		if (!file.exists()) {
 			if (file.mkdir()) {
-				System.out.println("Directory is created!");
+				System.out.println("Creation of mails directory");
+			} else {
+				System.out.println("Failed to create directory!");
+			}
+		}
+		
+		File config = new File(this.configDirectory);
+		if (!config.exists()) {
+			if (config.mkdir()) {
+				System.out.println("Creation of config directory");
 			} else {
 				System.out.println("Failed to create directory!");
 			}
@@ -48,7 +58,7 @@ public class MailManager {
 		int id = 0;
 
 		// Creation of unique id if needed
-		if (mail.getId() != null) {
+		if (!mail.getId().equals("null")) {
 			id = Integer.parseInt(mail.getId());
 		} else {
 			id = this.generateId();
@@ -59,8 +69,8 @@ public class MailManager {
 		BufferedWriter out = null;
 
 		try {
-			fw = new FileWriter(this.directory
-					+ System.getProperty("file.separator") + id + ".mail.txt");
+			fw = new FileWriter(this.mailDirectory
+					+ System.getProperty("file.separator") + id + ".mail");
 			out = new BufferedWriter(fw);
 
 			out.write(mail.toString());
@@ -130,7 +140,7 @@ public class MailManager {
 
 		List<Mail> res = new ArrayList<Mail>();
 
-		File dir = new File(this.directory);
+		File dir = new File(this.mailDirectory);
 		File[] mails = dir.listFiles();
 		// No files in directory.
 		if (mails == null) {
@@ -139,7 +149,7 @@ public class MailManager {
 
 		// Loop over all files in the directory.
 		for (File file : mails) {
-			this.openMail(file);
+			res.add(this.openMail(file));
 		}
 
 		return res;
@@ -173,7 +183,7 @@ public class MailManager {
 	public int generateId() {
 		int res = 0;
 
-		File dir = new File("config");
+		File dir = new File(this.configDirectory);
 		File[] configs = dir.listFiles();
 		if (configs == null) {
 			return 0;
@@ -217,11 +227,13 @@ public class MailManager {
 		BufferedWriter out = null;
 
 		try {
-			fw = new FileWriter(this.directory
-					+ System.getProperty("file.separator") + "serve.config");
+			fw = new FileWriter(this.configDirectory
+					+ System.getProperty("file.separator") + "config.server");
 			out = new BufferedWriter(fw);
+			
+			int temp = res + 1;
 
-			out.write(res + 1);
+			out.write(Integer.toString(temp));
 			out.flush();
 
 		} catch (Exception e) {
@@ -244,14 +256,14 @@ public class MailManager {
 	 * @param mail
 	 */
 	public void remove(Mail mail) {
-		File dir = new File("mails");
+		File dir = new File(this.mailDirectory);
 		File[] mails = dir.listFiles();
 		if (mails == null) {
 			return;
 		}
 
 		for (File file : mails) {
-			if (file.getName().equals(mail.getId() + ".mail.txt")) {
+			if (file.getName().equals(mail.getId() + ".mail")) {
 				file.delete();
 				return;
 			}

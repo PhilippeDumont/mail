@@ -58,9 +58,10 @@ public class Server {
 				inMessage = in.readUTF();
 
 				if (inMessage.startsWith(Protocol.ADD)) {
+					
 
 					Mail mail = new Mail();
-					mail.populat(inMessage.substring(4).split("\\s+"));
+					mail.populat(inMessage.substring(4));
 
 					this.mailManager.save(mail);
 
@@ -74,6 +75,7 @@ public class Server {
 					if (mails.isEmpty()) {
 						out.writeUTF(Protocol.EMPTY);
 					} else {
+
 						out.writeUTF(mails.get(0).toString());
 						this.mailManager.remove(mails.get(0));
 
