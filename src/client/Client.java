@@ -21,9 +21,6 @@ public class Client {
 	private Command command;
 	private Display display;
 
-	private String address;
-	private String pseudo;
-
 	public Client(int port, String serverName) {
 		this.serverName = serverName;
 		this.port = port;

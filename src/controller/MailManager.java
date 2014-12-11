@@ -45,13 +45,22 @@ public class MailManager {
 	 */
 	public boolean save(Mail mail) {
 
+		int id = 0;
+
+		// Creation of unique id if needed
+		if (mail.getId() != null) {
+			id = Integer.parseInt(mail.getId());
+		} else {
+			id = this.generateId();
+			mail.setId(Integer.toString(id));
+		}
+
 		FileWriter fw = null;
 		BufferedWriter out = null;
 
 		try {
 			fw = new FileWriter(this.directory
-					+ System.getProperty("file.separator")
-					+ mail.getDestination() + this.generateId() + ".txt");
+					+ System.getProperty("file.separator") + id + ".mail.txt");
 			out = new BufferedWriter(fw);
 
 			out.write(mail.toString());
@@ -131,7 +140,6 @@ public class MailManager {
 		// Loop over all files in the directory.
 		for (File file : mails) {
 			this.openMail(file);
-
 		}
 
 		return res;
@@ -163,26 +171,88 @@ public class MailManager {
 	 * @return
 	 */
 	public int generateId() {
-		// TODO: implement this function who generate an unique id
-		/**
-		 * parcour le directory et trouver un id not used.
-		 */
-		return 0;
+		int res = 0;
+
+		File dir = new File("config");
+		File[] configs = dir.listFiles();
+		if (configs == null) {
+			return 0;
+		}
+
+		for (File file : configs) {
+
+			if (file.getName().equals("config.server")) {
+
+				FileInputStream fis = null;
+				BufferedInputStream bis = null;
+				BufferedReader reader = null;
+
+				try {
+					fis = new FileInputStream(file);
+					bis = new BufferedInputStream(fis);
+					reader = new BufferedReader(new InputStreamReader(bis));
+					String entry;
+
+					while ((entry = reader.readLine()) != null) {
+						res = Integer.parseInt(entry);
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						fis.close();
+						bis.close();
+						reader.close();
+					} catch (IOException e) {
+						System.out.println("Error closing streams!");
+						e.printStackTrace();
+					}
+				}
+
+			}
+		}
+
+		FileWriter fw = null;
+		BufferedWriter out = null;
+
+		try {
+			fw = new FileWriter(this.directory
+					+ System.getProperty("file.separator") + "serve.config");
+			out = new BufferedWriter(fw);
+
+			out.write(res + 1);
+			out.flush();
+
+		} catch (Exception e) {
+			System.out.println("Error writing to file!");
+			e.printStackTrace();
+		} finally {
+			try {
+				fw.close();
+				out.close();
+			} catch (IOException e) {
+				System.out.println("Error closing streams!");
+				e.printStackTrace();
+			}
+		}
+
+		return res + 1;
 	}
 
 	/**
 	 * @param mail
 	 */
 	public void remove(Mail mail) {
-		File dir = new File("events");
-		File[] events = dir.listFiles();
-		if (events == null) {
+		File dir = new File("mails");
+		File[] mails = dir.listFiles();
+		if (mails == null) {
 			return;
 		}
 
-		for (File f : events) {
-			if (f.getName().equals(mail.getId() + ".txt")) {
-				f.delete();
+		for (File file : mails) {
+			if (file.getName().equals(mail.getId() + ".mail.txt")) {
+				file.delete();
 				return;
 			}
 		}

@@ -89,10 +89,10 @@ public class Command {
 	 * 
 	 */
 	public void help() {
-		System.out.println("HEP MENU");
+		System.out.println("++++HELP MENU++++");
 		System.out
 				.println("new [source] [destination] [title] [content] => send a mail on the server");
-		System.out.println("load => Get all the mail on the server");
+		System.out.println("load => Get all the mails on the server");
 
 	}
 

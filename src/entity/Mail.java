@@ -15,6 +15,14 @@ public class Mail {
 	private String title;
 	private String content;
 
+	public Mail() {
+		id = null;
+		source = null;
+		destination = null;
+		title = null;
+		content = null;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -58,14 +66,14 @@ public class Mail {
 	public String toString() {
 		String str = "";
 
-		str = this.source + "\t" + this.destination + "\t" + this.title + "\t"
-				+ this.content;
+		str = this.source + "\t" + this.destination + "\t"
+				+ this.title + "\t" + this.content;
 
 		return str;
 	}
 
 	/**
-	 * Populate a mail with a tab beetwen each data
+	 * Populate a mail with a tab between each data
 	 * 
 	 * @param text
 	 */

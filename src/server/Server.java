@@ -61,7 +61,6 @@ public class Server {
 
 					Mail mail = new Mail();
 					mail.populat(inMessage.substring(4).split("\\s+"));
-					System.out.println(mail.toString());
 
 					this.mailManager.save(mail);
 
@@ -80,7 +79,6 @@ public class Server {
 
 					}
 				}
-
 			}
 
 			// closing socket
